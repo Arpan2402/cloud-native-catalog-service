@@ -5,26 +5,27 @@ import com.arpanm.catalogservice.domain.Book;
 import com.arpanm.catalogservice.exception.BookAlreadyExistsException;
 import com.arpanm.catalogservice.exception.BookNotFoundException;
 import com.arpanm.catalogservice.service.BookService;
-import com.arpanm.catalogservice.web.BookController;
-import com.arpanm.catalogservice.web.BookControllerAdvice;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
-    private final BookControllerAdvice advice;
 
     @Override
+    @Transactional(readOnly = true)
     public Iterable<Book> getAllBooksFromCatalog() {
         return this.bookRepository.findAll();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Book viewBookDetailsFromCatalog(String isbn) {
         return this.bookRepository
                 .findByIsbn(isbn)
@@ -42,16 +43,20 @@ public class BookServiceImpl implements BookService {
     @Override
     public Book editBookInCatalog(String isbn, Book book) {
         return this.bookRepository.findByIsbn(isbn).map(bookData -> {
-            Book updatedBook = new Book(bookData.getIsbn(),
+            Book updatedBook = new Book(bookData.getId(),
+                                        bookData.getVersion(),
+                                        bookData.getIsbn(),
                                         book.getTitle(),
                                         book.getAuthor(),
-                                        book.getPrice());
+                                        book.getPrice(),
+                                        bookData.getCreatedDate(),
+                                        bookData.getLastUpdatedDate());
             return this.bookRepository.save(updatedBook);
         }).orElseThrow(() -> new BookNotFoundException(isbn));
     }
 
     @Override
     public void removeBookFromCatalog(String isbn) {
-        this.bookRepository.remove(isbn);
+        this.bookRepository.deleteByIsbn(isbn);
     }
 }

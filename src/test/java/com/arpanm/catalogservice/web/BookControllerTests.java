@@ -1,9 +1,8 @@
-package com.arpanm.catalogservice;
+package com.arpanm.catalogservice.web;
 
 import com.arpanm.catalogservice.domain.Book;
 import com.arpanm.catalogservice.exception.BookNotFoundException;
 import com.arpanm.catalogservice.service.BookService;
-import com.arpanm.catalogservice.web.BookController;
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +12,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.time.Instant;
 import java.util.Arrays;
 
 @WebMvcTest(BookController.class)
-public class BookControllerTest {
+public class BookControllerTests {
 
     @Autowired
     private BookController bookController;
@@ -41,7 +41,7 @@ public class BookControllerTest {
     public void testWhenViewAllBooksShouldReturnAll200() throws Exception {
         BDDMockito.when(bookService.getAllBooksFromCatalog())
                 .thenReturn(Arrays.asList(
-                        new Book("1234567", "Sample Title", "Sample Author", 1000d)));
+                        new Book(1l, 0, "1234567", "Sample Title", "Sample Author", 1000d, Instant.now(), Instant.now())));
         mockMvc.perform(MockMvcRequestBuilders.get("/v1/books"))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }

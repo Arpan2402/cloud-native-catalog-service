@@ -1,40 +1,51 @@
 package com.arpanm.catalogservice;
 
-import com.arpanm.catalogservice.dao.BookRepository;
 import com.arpanm.catalogservice.domain.Book;
-import org.junit.jupiter.api.BeforeEach;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.web.reactive.server.WebTestClient;
 
-@SpringBootTest
-class CatalogServiceApplicationTests {
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("integration")
+public class CatalogServiceApplicationTests {
 
-	@Autowired
-	private BookRepository bookRepository;
+    @Autowired
+    private WebTestClient webTestClient;
 
-	@Autowired
-	private WebApplicationContext webApplicationContext;
+    @Test
+    public void findBookByIsbn() {
+        Book book = Book.of("1234567", "Title1", "Author1", 1000d);
+        Book expectedBook = webTestClient
+                .post()
+                .uri("/v1/books")
+                .bodyValue(book)
+                .exchange()
+                .expectStatus()
+                .isCreated()
+                .expectBody(Book.class).value(book1 -> Assertions.assertThat(book1).isNotNull())
+                .returnResult().getResponseBody();
 
-	private MockMvc mockMvc;
+        webTestClient
+                .get()
+                .uri("/v1/books/" + expectedBook.getIsbn())
+                .exchange()
+                .expectStatus()
+                .isOk();
+    }
 
-	@BeforeEach
-	void setup() {
-		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).build();
-		this.bookRepository.save(
-				new Book("1234567", "Sample Tile", "Sample Author", 100d));
-	}
-
-	@Test
-	void testViewBookByValidIsbnShouldReturn200() throws Exception {
-		this.mockMvc.perform(MockMvcRequestBuilders.get("/v1/books/1234567"))
-				.andExpect(MockMvcResultMatchers.status().isOk())
-				.andExpect(MockMvcResultMatchers.jsonPath("$.isbn").value("1234567"));
-	}
-
+    @Test
+    public void createBook() {
+        Book book = Book.of("1234568", "Title1", "Author1", 1000d);
+        webTestClient
+                .post()
+                .uri("/v1/books")
+                .bodyValue(book)
+                .exchange()
+                .expectStatus()
+                .isCreated()
+                .expectBody(Book.class).value(book1 -> Assertions.assertThat(book1).isNotNull());
+    }
 }
