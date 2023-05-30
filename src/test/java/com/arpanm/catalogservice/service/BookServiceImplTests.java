@@ -45,7 +45,8 @@ class BookServiceImplTests {
 								"Sample Author",
 								1000d,
 								Instant.now(),
-								Instant.now())));
+								Instant.now(),
+								"Publisher")));
 	}
 
 	@Test

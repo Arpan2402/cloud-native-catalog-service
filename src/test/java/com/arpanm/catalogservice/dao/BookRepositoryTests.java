@@ -36,4 +36,11 @@ public class BookRepositoryTests {
         Assertions.assertThat(optional).isPresent();
         Assertions.assertThat(optional.get().getIsbn()).isEqualTo(isbn);
     }
+
+    @Test
+    public void deleteBookByIsbnShouldPass() {
+        this.jdbcAggregateTemplate.insert(Book.of("1234567", "Title1", "Author1", 1000d, "Publisher"));
+        long count = this.bookRepository.deleteByIsbn("1234567");
+        Assertions.assertThat(count).isEqualTo(1l);
+    }
 }

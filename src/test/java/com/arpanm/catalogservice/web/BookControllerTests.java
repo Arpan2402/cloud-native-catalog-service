@@ -41,7 +41,7 @@ public class BookControllerTests {
     public void testWhenViewAllBooksShouldReturnAll200() throws Exception {
         BDDMockito.when(bookService.getAllBooksFromCatalog())
                 .thenReturn(Arrays.asList(
-                        new Book(1l, 0, "1234567", "Sample Title", "Sample Author", 1000d, Instant.now(), Instant.now())));
+                        new Book(1l, 0, "1234567", "Sample Title", "Sample Author", 1000d, Instant.now(), Instant.now(), "Publisher")));
         mockMvc.perform(MockMvcRequestBuilders.get("/v1/books"))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }

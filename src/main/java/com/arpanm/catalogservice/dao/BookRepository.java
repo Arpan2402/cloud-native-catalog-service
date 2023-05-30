@@ -2,6 +2,7 @@ package com.arpanm.catalogservice.dao;
 
 import com.arpanm.catalogservice.domain.Book;
 import org.springframework.data.jdbc.repository.query.Modifying;
+import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,7 +15,8 @@ public interface BookRepository extends CrudRepository<Book, Long> {
     @Transactional(readOnly = true)
     Optional<Book> findByIsbn(String isbn);
 
-    @Modifying
     @Transactional
-    void deleteByIsbn(String isbn);
+    @Modifying
+    @Query("delete from Book b where b.isbn= :isbn")
+    Long deleteByIsbn(String isbn);
 }
