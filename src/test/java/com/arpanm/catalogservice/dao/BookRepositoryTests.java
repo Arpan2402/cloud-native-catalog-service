@@ -28,7 +28,7 @@ public class BookRepositoryTests {
     @Test
     public void findBookByIsbnShouldPass() {
         String isbn = "1234567";
-        Book book1 = Book.of(isbn, "Title1", "Author1", 1000d);
+        Book book1 = Book.of(isbn, "Title1", "Author1", 1000d, "Publisher");
 
         jdbcAggregateTemplate.insert(book1);
 

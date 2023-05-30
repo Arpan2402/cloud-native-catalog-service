@@ -17,7 +17,7 @@ public class CatalogServiceApplicationTests {
 
     @Test
     public void findBookByIsbn() {
-        Book book = Book.of("1234567", "Title1", "Author1", 1000d);
+        Book book = Book.of("1234567", "Title1", "Author1", 1000d, "Publisher");
         Book expectedBook = webTestClient
                 .post()
                 .uri("/v1/books")
@@ -38,7 +38,7 @@ public class CatalogServiceApplicationTests {
 
     @Test
     public void createBook() {
-        Book book = Book.of("1234568", "Title1", "Author1", 1000d);
+        Book book = Book.of("1234568", "Title1", "Author1", 1000d,"Publisher");
         webTestClient
                 .post()
                 .uri("/v1/books")

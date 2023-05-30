@@ -50,7 +50,8 @@ public class BookServiceImpl implements BookService {
                                         book.getAuthor(),
                                         book.getPrice(),
                                         bookData.getCreatedDate(),
-                                        bookData.getLastUpdatedDate());
+                                        bookData.getLastUpdatedDate(),
+                                        book.getPublisher());
             return this.bookRepository.save(updatedBook);
         }).orElseThrow(() -> new BookNotFoundException(isbn));
     }

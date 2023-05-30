@@ -1,5 +1,6 @@
 package com.arpanm.catalogservice.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
@@ -13,6 +14,7 @@ import javax.validation.constraints.Positive;
 import java.time.Instant;
 
 @Data
+@AllArgsConstructor
 public class Book {
 
     @Id
@@ -41,7 +43,9 @@ public class Book {
     @LastModifiedDate
     private final Instant lastUpdatedDate;
 
-    public static Book of(String isbn, String title, String author, Double price) {
-        return new Book(null, 0, isbn, title, author, price, null, null);
+    private String publisher;
+
+    public static Book of(String isbn, String title, String author, Double price, String publisher) {
+        return new Book(null, 0, isbn, title, author, price, null, null, publisher);
     }
 }
