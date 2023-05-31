@@ -16,6 +16,9 @@
 	<properties>
 		<java.version>1.8</java.version>
 		<spring-cloud.version>2021.0.7</spring-cloud.version>
+		<registry.username></registry.username>
+		<registry.url></registry.url>
+		<registry.auth-token></registry.auth-token>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -102,6 +105,16 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+					<image>
+						<name>ghcr.io/arpan2402/${project.artifactId}</name>
+					</image>
+					<docker>
+						<publishRegistry>
+							<username>${registry.username}</username>
+							<password>${registry.auth-token}</password>
+							<url>${registry.url}</url>
+						</publishRegistry>
+					</docker>
 				</configuration>
 			</plugin>
 		</plugins>
