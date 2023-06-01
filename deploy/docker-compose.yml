@@ -3,6 +3,7 @@ services:
 
   catalog-service-app:
     depends_on:
+      - config-server
       - catalog-postgres-db
     image: "ghcr.io/arpan2402/catalog-service"
     container_name: "catalog-service-app"
@@ -13,9 +14,10 @@ services:
       - BPL_JVM_THREAD_COUNT=50
       - BPL_DEBUG_ENABLED=true
       - BPL_DEBUG_PORT=5005
-      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_PROFILES_ACTIVE=docker
       - SPRING_DATASOURCE_URL=jdbc:postgresql://catalog-postgres-db/catalog_db
       - APPLICATION_LOADTESTDATA=true
+      - SPRING_CLOUD_CONFIG_URI=http://config-server:8888
 
   catalog-postgres-db:
     image: "postgres:14.4"
@@ -26,3 +28,12 @@ services:
       - POSTGRES_USER=user
       - POSTGRES_PASSWORD=password
       - POSTGRES_DB=catalog_db
+
+  config-server:
+    image: "ghcr.io/arpan2402/config-server"
+    container_name: "config-server"
+    ports:
+      - 8888:8888
+    environment:
+      - BPL_JVM_THREAD_COUNT=50
+      - SPRING_PROFILES_ACTIVE=docker
