@@ -36,7 +36,7 @@ jobs:
         with:
           sarif_file: ${{ steps.scan.outputs.sarif }}
       - name: Build with Maven
-        run: chmod +x mvnw ./mvnw --batch-mode --update-snapshots package
+        run: chmod +x mvnw && ./mvnw --batch-mode --update-snapshots package
 
   package:
     name: Package and Publish
@@ -57,7 +57,7 @@ jobs:
           java-version: '8'
           cache: maven
       - name: Build container image
-        run: chmod +x mvnw ./mvnw spring-boot:build-image -D skipTests -D spring-boot.build-image.imageName=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.VERSION }}
+        run: chmod +x mvnw && ./mvnw spring-boot:build-image -D skipTests -D spring-boot.build-image.imageName=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.VERSION }}
       - name: OCI image vulnerability scanning
         uses: anchore/scan-action@v3
         id: scan
