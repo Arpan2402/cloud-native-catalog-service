@@ -109,9 +109,6 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
-					<image>
-						<name>ghcr.io/arpan2402/${project.artifactId}</name>
-					</image>
 					<docker>
 						<publishRegistry>
 							<username>${registry.username}</username>

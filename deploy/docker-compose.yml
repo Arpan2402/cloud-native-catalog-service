@@ -14,7 +14,7 @@ services:
       - BPL_JVM_THREAD_COUNT=50
       - BPL_DEBUG_ENABLED=true
       - BPL_DEBUG_PORT=5005
-      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_PROFILES_ACTIVE=container
       - SPRING_DATASOURCE_URL=jdbc:postgresql://catalog-postgres-db/catalog_db
       - APPLICATION_LOADTESTDATA=true
       - SPRING_CLOUD_CONFIG_URI=http://config-server:8888
@@ -36,4 +36,4 @@ services:
       - 8888:8888
     environment:
       - BPL_JVM_THREAD_COUNT=50
-      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_PROFILES_ACTIVE=container
