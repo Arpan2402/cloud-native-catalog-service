@@ -28,8 +28,10 @@ spec:
             - name: BPL_JVM_THREAD_COUNT
               value: "50"
             - name: SPRING_DATASOURCE_URL
-              value: jdbc:postgresql://catalog-app-db/catalog_db
+              value: jdbc:postgresql://bookstore-db/catalog_db
             - name: SPRING_PROFILES_ACTIVE
-              value: dev
+              value: container
             - name: APPLICATION_LOADTESTDATA
               value: "true"
+            - name: SPRING_CLOUD_CONFIG_URI
+              value: http://config-server

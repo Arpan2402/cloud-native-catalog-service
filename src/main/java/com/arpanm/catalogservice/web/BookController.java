@@ -15,7 +15,8 @@ public class BookController {
     private final BookService bookService;
 
     @GetMapping
-    public Iterable<Book> viewAllBooksInCatalog() {
+    public Iterable<Book> viewAllBooksInCatalog() throws InterruptedException {
+        Thread.sleep(3000);
         return this.bookService.getAllBooksFromCatalog();
     }
 
